@@ -72,10 +72,9 @@ const userSchema = new Schema(
  * @param {function} next - Calls the next step in the save process.
  * @returns {Promise<void>}
  */
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) next();
+userSchema.pre("save", async function () {
+  if (!this.isModified("password")) return;
   this.password = await bcrypt.hash(this.password, 10);
-  next();
 });
 
 userSchema.methods.isPasswordCorrect = async function (password) {
